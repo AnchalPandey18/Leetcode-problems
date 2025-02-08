@@ -1,43 +1,29 @@
+#include <unordered_map>
+#include <queue>
+using namespace std;
+
 class NumberContainers {
 public:
-    // Constructor
-    // The data structures are already initialized as
-    // part of the member variable declarations.
-    NumberContainers() {}
+    unordered_map<int, priority_queue<int, vector<int>, greater<int>>> res;
+    unordered_map<int, int> index_val;
 
     void change(int index, int number) {
-        if (indexToNumbers.find(index) != indexToNumbers.end()) {
-            int previousNumber = indexToNumbers[index];
-            numberToIndices[previousNumber].erase(index);
-            if (numberToIndices[previousNumber].empty()) {
-                numberToIndices.erase(previousNumber);
-            }
+        if (index_val.count(index)) {
+            int prevNum = index_val[index];
+            if (prevNum == number) return;
+            res[prevNum].push(INT_MAX); // Lazy deletion
         }
-        indexToNumbers[index] = number;
-        numberToIndices[number].insert(index);
+        res[number].push(index);
+        index_val[index] = number;
     }
 
     int find(int number) {
-        if (numberToIndices.find(number) != numberToIndices.end()) {
-            // Get the smallest index
-            return *numberToIndices[number].begin();
+        while (!res[number].empty() && index_val[res[number].top()] != number) {
+            res[number].pop();
         }
-        return -1;
+        return res[number].empty() ? -1 : res[number].top();
     }
-
-private:
-    // Map from number to set of indices
-    unordered_map<int, set<int>> numberToIndices;
-    // Map from index to number
-    unordered_map<int, int> indexToNumbers;
 };
-
-/**
- * Your NumberContainers object will be instantiated and called as such:
- * NumberContainers* obj = new NumberContainers();
- * obj->change(index,number);
- * int param_2 = obj->find(number);
- */
 
 /**
  * Your NumberContainers object will be instantiated and called as such:
