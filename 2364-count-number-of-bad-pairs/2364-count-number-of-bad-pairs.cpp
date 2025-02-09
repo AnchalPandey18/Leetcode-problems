@@ -1,4 +1,5 @@
 class Solution {
+
 public:
     long long countBadPairs(vector<int>& nums) {
         unordered_map<int, int> freq;
@@ -11,6 +12,6 @@ public:
         }
         
         return (n * (n - 1)) / 2 - goodPairs;
+      
     }
 };
-    
