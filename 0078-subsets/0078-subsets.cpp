@@ -8,7 +8,7 @@ public:
     subsequence(nums,i+1,ans , n,temp);
     temp.push_back(nums[i]);
       subsequence(nums,i+1,ans, n,temp);
-     // temp.pop_back();
+      temp.pop_back();
 
  }
 
